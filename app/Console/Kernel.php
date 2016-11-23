@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console;
+namespace Domain\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+	Commands\Test::class
     ];
 
     /**
