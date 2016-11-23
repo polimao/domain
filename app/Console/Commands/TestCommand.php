@@ -4,7 +4,7 @@ namespace Domain\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class Test extends Command
+class TestCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -37,7 +37,6 @@ class Test extends Command
      */
     public function handle()
     {
-        //
 	$this->info('this is a command test!');
     }
 }
