@@ -15,8 +15,8 @@ class CreateDomainTable extends Migration
     {
         Schema::create('domains', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('body_id')->unique();
-            $table->integer('suffix_id')->unique();
+            $table->integer('body_id');
+            $table->integer('suffix_id');
             $table->integer('register_status')->default(0);
             $table->timestamp('verify_at')->nullable();
             $table->integer('search_cnt')->default(0);

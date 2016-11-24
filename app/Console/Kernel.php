@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\TestCommand::class,
-    	Commands\PullWordCommand::class
+        Commands\PullWordCommand::class,
+    	Commands\VerifyRegisterCommand::class
     ];
 
     /**
