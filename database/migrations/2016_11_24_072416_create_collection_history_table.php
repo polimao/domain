@@ -13,7 +13,7 @@ class CreateCollectionHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('collection_history', function (Blueprint $table) {
+        Schema::create('collection_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('domain_id');
@@ -28,6 +28,6 @@ class CreateCollectionHistoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('collection_history');
+        Schema::dropIfExists('collection_histories');
     }
 }

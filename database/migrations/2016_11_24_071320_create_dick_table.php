@@ -13,13 +13,13 @@ class CreateDickTable extends Migration
      */
     public function up()
     {
-        Schema::create('dick', function (Blueprint $table) {
+        Schema::create('dicks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->integer('body_id')->index();
             $table->integer('lengh');
-            $table->integer('search_cnt');
-            $table->integer('appear_cnt');
+            $table->integer('search_cnt')->default(0);
+            $table->integer('appear_cnt')->default(0);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateDickTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dick');
+        Schema::dropIfExists('dicks');
     }
 }

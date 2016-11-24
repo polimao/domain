@@ -13,7 +13,7 @@ class CreateSuffixTable extends Migration
      */
     public function up()
     {
-        Schema::create('suffix', function (Blueprint $table) {
+        Schema::create('suffixs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateSuffixTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('suffix');
+        Schema::dropIfExists('suffixs');
     }
 }

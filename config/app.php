@@ -178,6 +178,7 @@ return [
         Domain\Providers\EventServiceProvider::class,
         Domain\Providers\RouteServiceProvider::class,
 
+        Overtrue\LaravelPinyin\ServiceProvider::class,
     ],
 
     /*
@@ -226,6 +227,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Pinyin' => Overtrue\LaravelPinyin\Facades\Pinyin::class,
     ],
 
 ];

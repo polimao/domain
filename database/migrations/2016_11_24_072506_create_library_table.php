@@ -13,7 +13,7 @@ class CreateLibraryTable extends Migration
      */
     public function up()
     {
-        Schema::create('library', function (Blueprint $table) {
+        Schema::create('libraries', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateLibraryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('library');
+        Schema::dropIfExists('libraries');
     }
 }

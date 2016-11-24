@@ -13,12 +13,12 @@ class CreateBodyTable extends Migration
      */
     public function up()
     {
-        Schema::create('body', function (Blueprint $table) {
+        Schema::create('bodies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->integer('lengh');
-            $table->integer('search_cnt');
-            $table->integer('appear_cnt');
+            $table->integer('search_cnt')->default(0);
+            $table->integer('appear_cnt')->default(0);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateBodyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('body');
+        Schema::dropIfExists('bodies');
     }
 }
