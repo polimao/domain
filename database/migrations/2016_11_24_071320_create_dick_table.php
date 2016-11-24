@@ -21,6 +21,8 @@ class CreateDickTable extends Migration
             $table->integer('search_cnt')->default(0);
             $table->integer('appear_cnt')->default(0);
             $table->timestamps();
+
+            $table->index('name');
         });
     }
 
