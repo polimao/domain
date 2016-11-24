@@ -7,6 +7,7 @@ use Curl;
 use Pinyin;
 use Domain\Dick;
 use Domain\Body;
+use Domain\Library;
 
 
 class PullWordCommand extends Command
@@ -42,12 +43,28 @@ class PullWordCommand extends Command
      */
     public function handle()
     {
-        $text = file_get_contents(storage_path('library/test.txt'));
-        $arr = $this->str_split_unicode($text,3000);
+
+        foreach (scandir(storage_path('/library')) as $file) {
+            $file_path = storage_path('/library') . "/$file";
+            if(is_file($file_path)){
+                if(!Library::where('name',$file)->first()){
+                    $this->splitText($file_path);
+                    Library::create(['name' => $file]);
+                }
+            }
+        }
+    }
+
+    private function splitText($file_path)
+    {
+        // dd($file_path);
+        $text = file_get_contents($file_path);
+        $arr = $this->str_split_unicode($text,1000);
         // dd($arr);
         // $arr = array_reverse($arr);
         foreach ($arr as $key => $value) {
             // $this->info($value);
+
             $url = "http://www.pullword.com/process.php";
             $curl = new Curl();
             $param = array(
@@ -55,13 +72,13 @@ class PullWordCommand extends Command
                     "param2" => "0",
                     "source" => $value,
                 );
-            $this->info('剩余------------------------'. (count($arr)-$key).'组');
+            $this->comment('剩余------------------------'. (count($arr)-$key).'组');
             $res = $curl->post($url, $param);
             // dd($res->body);
             $words = explode("\r\n",$res);
             // $Py = new ChineseSpell();
-            //
-            // var_dump($words);
+            sleep(5);
+            // var($words);
             foreach ($words as $k => $word) {
                 if($k < 16 || !$word)
                     continue;

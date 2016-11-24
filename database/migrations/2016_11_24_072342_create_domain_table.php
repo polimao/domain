@@ -17,10 +17,10 @@ class CreateDomainTable extends Migration
             $table->increments('id');
             $table->integer('body_id')->unique();
             $table->integer('suffix_id')->unique();
-            $table->integer('register_status');
+            $table->integer('register_status')->default(0);
             $table->timestamp('verify_at')->nullable();
-            $table->integer('search_cnt');
-            $table->integer('collection_cnt');
+            $table->integer('search_cnt')->default(0);
+            $table->integer('collection_cnt')->default(0);
             $table->timestamps();
         });
     }
