@@ -46,7 +46,11 @@ class VerifyRegisterCommand extends Command
         $suffixs = Suffix::get(['name','id'])->toArray();
         $suffixs = array_pluck($suffixs, 'name','id');
 
-        $offset = 0;
+        $suffixs = array_diff($suffixs,['aero','be','ca','ch','fr','hk','ie','im','in','io','la','nu','se','tw','us','ws']);
+
+        // dd($suffixs);
+
+        $offset = 307;
         do{
             $bodies = Body::offset($offset)->limit(200)->orderBy('id')->get();
             foreach ($bodies as $key => $body) {
@@ -55,7 +59,7 @@ class VerifyRegisterCommand extends Command
                 $this->requireYuming($body,$suffixs);
             }
             $offset += 200;
-            sleep(5);
+            // sleep(5);
         } while ($bodies);
     }
 
@@ -83,6 +87,8 @@ class VerifyRegisterCommand extends Command
                 {
                     $register_status = 8;
                     $this->error('   已经注册');
+                }else{
+                    $this->error('   other ' . $match[1]);
                 }
 
                 $data = [
@@ -100,8 +106,10 @@ class VerifyRegisterCommand extends Command
                     $domain->verify_at = date('Y-m-d H:i:s');
                     $domain->save();
                 }
+            }else{
+                // dd($result);
             }
-            sleep(3);
+            sleep(1);
         }
     }
 

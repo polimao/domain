@@ -109,13 +109,13 @@ class PullWordCommand extends Command
                             'lengh'   => strlen($pinyin),
                             'appear_cnt' => 1
                             ]);
-                        Dick::create([
-                            'name'    => $word,
-                            'lengh'   => mb_strlen($word),
-                            'body_id' => $body->id,
-                            'appear_cnt' => 1
-                            ]);
                     }
+                    Dick::create([
+                        'name'    => $word,
+                        'lengh'   => mb_strlen($word),
+                        'body_id' => $body->id,
+                        'appear_cnt' => 1
+                        ]);
                 }
 
             }
