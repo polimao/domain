@@ -44,10 +44,11 @@ class PullWordCommand extends Command
     public function handle()
     {
 
-        foreach (scandir(storage_path('/library')) as $file) {
+        foreach (array_reverse(scandir(storage_path('/library'))) as $file) {
             $file_path = storage_path('/library') . "/$file";
             if(is_file($file_path)){
                 if(!Library::where('name',$file)->first()){
+                    $this->comment('=====' . $file);
                     $this->splitText($file_path);
                     Library::create(['name' => $file]);
                 }
@@ -61,7 +62,7 @@ class PullWordCommand extends Command
         $text = file_get_contents($file_path);
         $arr = $this->str_split_unicode($text,1000);
         // dd($arr);
-        // $arr = array_reverse($arr);
+        $arr = array_reverse($arr);
         foreach ($arr as $key => $value) {
             // $this->info($value);
 
@@ -109,13 +110,13 @@ class PullWordCommand extends Command
                             'lengh'   => strlen($pinyin),
                             'appear_cnt' => 1
                             ]);
-                        Dick::create([
-                            'name'    => $word,
-                            'lengh'   => mb_strlen($word),
-                            'body_id' => $body->id,
-                            'appear_cnt' => 1
-                            ]);
                     }
+                    Dick::create([
+                        'name'    => $word,
+                        'lengh'   => mb_strlen($word),
+                        'body_id' => $body->id,
+                        'appear_cnt' => 1
+                        ]);
                 }
 
             }
