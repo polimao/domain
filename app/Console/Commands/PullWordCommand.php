@@ -62,7 +62,7 @@ class PullWordCommand extends Command
         $text = file_get_contents($file_path);
         $arr = $this->str_split_unicode($text,1000);
         // dd($arr);
-        // $arr = array_reverse($arr);
+        $arr = array_reverse($arr);
         foreach ($arr as $key => $value) {
             // $this->info($value);
 

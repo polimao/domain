@@ -12,4 +12,8 @@ class Domain extends Model
     {
         return $this->belongsTo('Domain\Body');
     }
+    public function suffix()
+    {
+        return $this->belongsTo('Domain\Suffix');
+    }
 }

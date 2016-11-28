@@ -17,14 +17,14 @@ class VerifyRegisterCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'yep:verify';
+    protected $signature = 'yep:verify {source=aaw8 : Default aaw8}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '';
+    protected $description = 'Get domain verify status.';
 
     /**
      * Create a new command instance.
@@ -43,6 +43,70 @@ class VerifyRegisterCommand extends Command
      */
     public function handle()
     {
+        $source = $this->argument('source');
+        $method = 'deal' . ucfirst($source);
+        if(method_exists($this,$method))
+            $this->$method();
+        else
+            $this->error('Method no exist!');
+    }
+
+    public function dealXinwang()
+    {
+        $suffixs = Suffix::get(['name','id'])->toArray();
+        $suffixs = array_pluck($suffixs, 'name','id');
+
+        $offset = 0;
+        do{
+            // $bodies = Body::where('register_status',0)->offset($offset)->limit(200)->orderBy('id','desc')->get();
+            $domain = Domain::where('register_status',0)->offset($offset)->first();
+// dd($domain);
+            $this->requireXinwang($domain,$suffixs[$domain->suffix_id]);
+
+            // sleep(0.5);
+        } while (true);
+
+    }
+
+    private function requireXinwang($domain,$suffix)
+    {
+        $body = $domain->body->name;
+        $url = "http://checkdomain.xinnet.com/domainCheck?callbackparam=jQuery17208138300830344336_1480265083858&searchRandom=8&prefix={$body}&suffix=.{$suffix}&_=1480265126741";
+
+
+        $curl = new Curl();
+        $result = $curl->get($url);
+        $this->comment($url);
+        $result = str_replace(['jQuery17208138300830344336_1480265083858(',')'], '', $result);
+        $data = json_decode($result,true);
+
+// [{"searchRandom":8,"result":[{"yes":[],"no":[{"price":55,"flag":false,"productCode":"AEPDxin000201","prefix":"testtest","originalNewPrice":128,"domainName":"testtest.net","goodsCode":"GDxin000201","feeFlag":false,"suffix":".net","timeAmount":1}]}]}])
+
+        if(isset($data[0]['result'][0]['yes'])){
+            $register_status = -1;
+            if(!empty($data[0]['result'][0]['yes'])){
+                $register_status = -8;
+                $this->info('   可以注册');
+            }else{
+                $register_status = 8;
+                $this->error('   已经注册');
+            }
+            if ($domain->register_status <> $register_status){
+                $domain->register_status = $register_status;
+                $domain->verify_at = date('Y-m-d H:i:s');
+                $domain->save();
+                // dd($domain->toArray(),$register_status,12,date('Y-m-d H:i:s'));
+            }
+        }else{
+            $this->error(' Web Error!');
+            dd();
+        }
+
+        // dd($data[0]['result'][0]['yes'],$data[0]['result' ][0]['no']);        
+    }
+
+    public function dealAaw8()
+    {
         $suffixs = Suffix::get(['name','id'])->toArray();
         $suffixs = array_pluck($suffixs, 'name','id');
 
@@ -54,7 +118,7 @@ class VerifyRegisterCommand extends Command
         do{
             // $bodies = Body::where('register_status',0)->offset($offset)->limit(200)->orderBy('id','desc')->get();
             $domain = Domain::where('register_status',0)->offset($offset)->whereIn('suffix_id',array_keys($suffixs))->first();
-
+// dd($domain);
             $this->requireAAW8($domain,$suffixs);
 
             // sleep(1);
