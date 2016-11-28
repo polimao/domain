@@ -43,11 +43,12 @@ class PullWordCommand extends Command
      */
     public function handle()
     {
-
+        // dd(scandir(storage_path('/library')));
         foreach (scandir(storage_path('/library')) as $file) {
             $file_path = storage_path('/library') . "/$file";
             if(is_file($file_path)){
                 if(!Library::where('name',$file)->first()){
+                    $this->comment('====== ' . $file);
                     $this->splitText($file_path);
                     Library::create(['name' => $file]);
                 }
