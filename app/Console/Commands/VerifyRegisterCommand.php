@@ -43,8 +43,6 @@ class VerifyRegisterCommand extends Command
      */
     public function handle()
     {
-        echo date('Y-m-d H:i:s');
-        die();
         $source = $this->argument('source');
         $method = 'deal' . ucfirst($source);
         if(method_exists($this,$method))
