@@ -56,14 +56,14 @@ class VerifyRegisterCommand extends Command
         $suffixs = Suffix::get(['name','id'])->toArray();
         $suffixs = array_pluck($suffixs, 'name','id');
 
-        $offset = 0;
+        $offset = 1000;
         do{
             // $bodies = Body::where('register_status',0)->offset($offset)->limit(200)->orderBy('id','desc')->get();
-            $domain = Domain::where('register_status',0)->offset($offset)->first();
+            $domain = Domain::where('register_status',0)->offset($offset)->orderBy('id','desc')->first();
 // dd($domain);
             $this->requireXinwang($domain,$suffixs[$domain->suffix_id]);
 
-            sleep(2);
+            sleep(1);
         } while (true);
 
     }
